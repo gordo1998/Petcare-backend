@@ -4,6 +4,8 @@ import java.io.Serializable;
 import jakarta.persistence.*;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 /**
  * The persistent class for the servicios database table.
@@ -22,6 +24,7 @@ public class Servicio implements Serializable {
 	private String nombreServicio;
 
 	//bi-directional many-to-one association to Serviciocuidador
+	@JsonManagedReference
 	@OneToMany(mappedBy="servicio")
 	private List<Serviciocuidador> serviciocuidadors;
 

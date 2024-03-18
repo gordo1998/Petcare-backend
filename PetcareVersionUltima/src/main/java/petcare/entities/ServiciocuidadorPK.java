@@ -2,6 +2,9 @@ package petcare.entities;
 
 import java.io.Serializable;
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * The primary key class for the serviciocuidador database table.
