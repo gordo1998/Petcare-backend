@@ -4,6 +4,8 @@ import java.io.Serializable;
 import jakarta.persistence.*;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 /**
  * The persistent class for the cuenta database table.
@@ -39,6 +41,7 @@ public class Cuenta implements Serializable {
 	private String username;
 
 	//bi-directional many-to-one association to Cuidador
+	@JsonManagedReference
 	@OneToMany(mappedBy="cuenta")
 	private List<Cuidador> cuidadors;
 

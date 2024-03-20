@@ -4,6 +4,7 @@ import java.io.Serializable;
 import jakarta.persistence.*;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
@@ -24,6 +25,7 @@ public class Cuidador implements Serializable {
 	private String descripcion;
 
 	//bi-directional many-to-one association to Cuenta
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="cuentaCuidador")
 	private Cuenta cuenta;

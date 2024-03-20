@@ -1,6 +1,9 @@
 package petcare.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import petcare.dao.ServicioCuidadoresJPA;
 import petcare.entities.Cuenta;
+import petcare.entities.Cuidador;
 import petcare.entities.Sacarcuidadore;
 import petcare.entities.Servicio;
 import petcare.entities.Serviciocuidador;
@@ -74,8 +78,34 @@ public class CuentasController {
 	ServicioCuidadoresJPA jpa;
 	
 	@GetMapping(value = "getServiciosCuidador/{idServicio}", produces = MediaType.APPLICATION_JSON_VALUE)
-	List<Serviciocuidador> getlistServCuidadores(@PathVariable("idServicio") int idServicio){
-		return jpa.getServicioCuidador(idServicio);
+	Map<String, List<String>> getlistServCuidadores(@PathVariable("idServicio") int idServicio){
+		
+		List<Serviciocuidador> cuidadores = jpa.getServicioCuidador(idServicio);
+		List<Cuidador> listaCuidadores = new ArrayList<>();
+		for (Serviciocuidador c: cuidadores) {
+			listaCuidadores.add(c.getCuidador());
+		}
+		
+		List<Cuenta> listaCuentas = new ArrayList<>();
+		
+		for (Cuidador y: listaCuidadores) {
+			listaCuentas.add(y.getCuenta());
+		}
+		
+		Map<String, List<String>> mapString = new HashMap<>();
+		
+		
+		for (Cuenta z: listaCuentas) {
+			//listaString.add()
+			List<String> lista = new ArrayList<>();
+			lista.add(z.getNombre());
+			lista.add(z.getApellidoPrimero());
+			lista.add(z.getApellidoDos());
+			lista.add(String.valueOf(z.getIdCuenta()));
+			mapString.put((z.getNombre() + " " + z.getApellidoPrimero() + " " + z.getApellidoDos()), lista);
+		}
+		
+		return mapString;
 	}
 	
 	
