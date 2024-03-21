@@ -8,7 +8,6 @@ public class CuidadorDaoImp implements CuidadorDao{
 
 	@Override
 	public void addCuidador(Cuidador cuidador) {
-		// TODO Auto-generated method stub
 		
 	}
 
