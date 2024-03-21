@@ -13,4 +13,6 @@ import petcare.entities.ServiciocuidadorPK;
 public interface ServicioCuidadoresJPA extends JpaRepository<Serviciocuidador, ServiciocuidadorPK>{
 	@Query("Select s from Serviciocuidador s where s.servicio.idServicio = ?1")
 	List<Serviciocuidador> getServicioCuidador(int servicio);
+	
+	
 }

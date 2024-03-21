@@ -122,7 +122,7 @@ public class CuentasController {
 			lista.add(z.getApellidoPrimero());
 			lista.add(z.getApellidoDos());
 			lista.add(String.valueOf(z.getIdCuenta()));
-			mapString.put((z.getNombre() + " " + z.getApellidoPrimero() + " " + z.getApellidoDos()), lista);
+			mapString.put((z.getNombre() + " " + z.getApellidoPrimero() + " " + z.getApellidoDos()), lista); // --> En la lista tengo que añadir los servicio cuidador
 		}
 		
 		return mapString;

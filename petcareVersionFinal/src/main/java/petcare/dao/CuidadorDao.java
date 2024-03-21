@@ -11,7 +11,5 @@ public interface CuidadorDao {
 	List<Cuidador> getCuidadores();
 	Cuidador retrieveCuidador(Cuidador cuidador);
 	Cuidador retrieveCuidador(int primaryKey);
-	Cuidador retrieveCuidador(String nombre);
-	
 	
 }

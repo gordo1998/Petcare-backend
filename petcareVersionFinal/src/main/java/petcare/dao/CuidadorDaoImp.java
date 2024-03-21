@@ -2,49 +2,44 @@ package petcare.dao;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import petcare.entities.Cuidador;
 
 public class CuidadorDaoImp implements CuidadorDao{
+	@Autowired
+	CuidadorJpa jpaCuidador;
 
 	@Override
 	public void addCuidador(Cuidador cuidador) {
-		
+		jpaCuidador.save(cuidador);
 	}
 
 	@Override
 	public void removeCuidador(Cuidador cuidador) {
-		// TODO Auto-generated method stub
-		
+		jpaCuidador.delete(cuidador);
 	}
 
 	@Override
 	public void removeCuidador(int primaryKey) {
-		// TODO Auto-generated method stub
-		
+		jpaCuidador.deleteById(primaryKey);
 	}
 
 	@Override
 	public List<Cuidador> getCuidadores() {
-		// TODO Auto-generated method stub
-		return null;
+		return jpaCuidador.findAll();
 	}
 
 	@Override
 	public Cuidador retrieveCuidador(Cuidador cuidador) {
-		// TODO Auto-generated method stub
-		return null;
+		return jpaCuidador.getReferenceById(cuidador.getIdCuidador());
 	}
 
 	@Override
 	public Cuidador retrieveCuidador(int primaryKey) {
-		// TODO Auto-generated method stub
-		return null;
+		return jpaCuidador.getReferenceById(primaryKey);
 	}
 
-	@Override
-	public Cuidador retrieveCuidador(String nombre) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 }
