@@ -45,13 +45,19 @@ public class CuentasController {
 	
 	
 	@PostMapping(value = "registroCuenta", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	boolean registerCuenta(@RequestBody Cuenta cuenta) {
+	boolean registerCuenta(@RequestBody List<String> datosUser) {
+		Cuenta cuenta = new Cuenta();
+		cuenta.setEmail(datosUser.get(0));
+		cuenta.setPasswd(datosUser.get(1));
 		return services.addCuenta(cuenta);
 	}
 	
 	@PostMapping(value = "loginCuenta", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	Cuenta loginCuenta(@RequestBody Cuenta cuenta) {
-		return services.retrieveCuenta(cuenta.getEmail(), cuenta.getPasswd());
+	Cuenta loginCuenta(@RequestBody List<String> datosUser) {
+		String email = datosUser.get(0);
+		String contrasenya = datosUser.get(1);
+		
+		return services.retrieveCuenta(email, contrasenya);
 	}
 		
 	@DeleteMapping(value = "deleteCuenta", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -132,7 +138,7 @@ public class CuentasController {
 	@GetMapping(value = "getReservas/{idDueño}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Map<String, List<String>> getReservas(@PathVariable("idDueño") int idDueño){
 		List<Reserva> reservas = reservaService.retrieveReserva(idDueño);
-		Map<String, List>
+		//Map<String, List>
 		for (Reserva r: reservas) {
 			
 		}

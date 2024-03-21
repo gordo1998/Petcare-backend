@@ -25,7 +25,7 @@ public class Cuidador implements Serializable {
 	private String descripcion;
 
 	//bi-directional many-to-one association to Cuenta
-	@JsonBackReference
+	@JsonBackReference(value = "user_cuidadores")
 	@ManyToOne
 	@JoinColumn(name="cuentaCuidador")
 	private Cuenta cuenta;

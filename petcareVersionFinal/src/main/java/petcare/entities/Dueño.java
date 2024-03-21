@@ -24,7 +24,7 @@ public class Dueño implements Serializable {
 	private String descripcion;
 
 	//bi-directional many-to-one association to Cuenta
-	@JsonBackReference
+	@JsonBackReference(value = "user_dueños")
 	@ManyToOne
 	@JoinColumn(name="cuentaDueño")
 	private Cuenta cuenta;

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import jakarta.persistence.*;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
@@ -41,11 +42,12 @@ public class Cuenta implements Serializable {
 	private String username;
 
 	//bi-directional many-to-one association to Cuidador
-	@JsonManagedReference
+	@JsonManagedReference(value = "user_cuidadores")
 	@OneToMany(mappedBy="cuenta")
 	private List<Cuidador> cuidadors;
 
 	//bi-directional many-to-one association to Dueño
+	@JsonManagedReference(value = "user_dueños")
 	@OneToMany(mappedBy="cuenta")
 	private List<Dueño> dueños;
 
