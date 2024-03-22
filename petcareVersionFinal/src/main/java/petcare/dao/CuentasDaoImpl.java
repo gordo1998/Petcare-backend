@@ -10,6 +10,7 @@ import petcare.entities.Cuenta;
 public class CuentasDaoImpl implements CuentasDao{
 	@Autowired
 	CuentasJpaRepository cuentaJpa;
+	
 
 	@Override
 	public void addCuenta(Cuenta cuenta) {

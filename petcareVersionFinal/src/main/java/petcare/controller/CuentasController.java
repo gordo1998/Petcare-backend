@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import petcare.dao.CrudImp;
 import petcare.dao.ServicioCuidadoresJPA;
 import petcare.entities.Cuenta;
 import petcare.entities.Cuidador;
@@ -43,6 +44,10 @@ public class CuentasController {
 	ReservaService reservaService;
 	
 	
+	@Autowired
+	CrudImp<Cuenta, Cuenta, Integer> crudCuenta;
+	
+	
 	
 	@PostMapping(value = "registroCuenta", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	boolean registerCuenta(@RequestBody List<String> datosUser) {
@@ -61,8 +66,8 @@ public class CuentasController {
 	}
 		
 	@DeleteMapping(value = "deleteCuenta", produces = MediaType.APPLICATION_JSON_VALUE)
-	boolean deleteCuenta(@RequestBody Cuenta cuenta) {
-		return services.deleteCuenta(cuenta);
+	void deleteCuenta(@RequestBody Cuenta cuenta) {
+		crudCuenta.delete(cuenta);
 	}
 	
 	@DeleteMapping(value = "deleteCuentaId/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

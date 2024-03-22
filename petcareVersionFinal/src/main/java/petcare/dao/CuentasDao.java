@@ -8,7 +8,7 @@ import petcare.entities.Cuenta;
 
 @Service
 public interface CuentasDao {
-	//Añadir cuenta
+		//Añadir cuenta
 		void addCuenta(Cuenta cuenta);
 		//Eliminar cuenta
 		void removeCuenta(Cuenta cuenta);
