@@ -56,14 +56,12 @@ constraint pk_servicio primary key (idServicio)
 # Revisar enpoints que devuelvan información que provenga de esta tabla porque la he modificado
 create table servicioCuidador
 (
-idServicio int,
-idCuidador int,
-cuidadorSC int,
-servicioSC int,
-constraint pf_servicioCuidador primary key(idServicio, idCuidador),
-constraint fk_uno foreign key (cuidadorSC) references cuidador(idCuidador)
+idServicioS int,
+idCuidadorS int,
+constraint pf_servicioCuidador primary key(idServicioS, idCuidadorS),
+constraint fk_uno foreign key (idCuidadorS) references cuidador(idCuidador)
 on delete cascade on update cascade,
-constraint fk_dos foreign key (servicioSC) references servicios(idServicio)
+constraint fk_dos foreign key (idServicioS) references servicios(idServicio)
 on delete cascade on update cascade
 );
 
@@ -89,6 +87,7 @@ on delete cascade on update cascade
 create table reservas
 (
 idReserva int auto_increment,
+
 cuidadorR int,
 duenyoR int,
 constraint pk_reserva primary key (idReserva),
@@ -146,14 +145,26 @@ constraint fk_raza foreign key (razaMascota) references raza(idRaza)
 on delete cascade on update cascade
 );
 
-create table mascotaReservado
+create table mascotaReservada
 (
-
+idReservaR int,
+idMascotaR int,
+constraint pk_mascotaReserva primary key (idReservaR, idMascotaR),
+constraint fk_res foreign key (idReservaR) references reservas(idReserva)
+on delete cascade on update cascade,
+constraint fk_mas foreign key (idMascotaR) references mascota (idMascota)
+on delete cascade on update cascade
 );
 
 create table cuidadorAnimal
 (
-
+idAnimalC int,
+idCuidadorC int,
+constraint pk_cuidadorAnimal primary key (idAnimalC, idCuidadorC),
+constraint fk_animalC foreign key (idAnimalC) references animal(idAnimal)
+on delete cascade on update cascade,
+constraint fk_cuidadorC foreign key (idCuidadorC) references cuidador(idCuidador)
+on delete cascade on update cascade
 );
 
 use petcare;
