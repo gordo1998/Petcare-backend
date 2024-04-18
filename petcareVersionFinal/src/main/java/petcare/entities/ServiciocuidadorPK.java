@@ -2,9 +2,6 @@ package petcare.entities;
 
 import java.io.Serializable;
 import jakarta.persistence.*;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * The primary key class for the serviciocuidador database table.
@@ -14,24 +11,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class ServiciocuidadorPK implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
-	
-	private int idServicio;
 
-	private int idCuidador;
+	@Column(insertable=false, updatable=false)
+	private int idServicioS;
+
+	@Column(insertable=false, updatable=false)
+	private int idCuidadorS;
 
 	public ServiciocuidadorPK() {
 	}
-	public int getIdServicio() {
-		return this.idServicio;
+	public int getIdServicioS() {
+		return this.idServicioS;
 	}
-	public void setIdServicio(int idServicio) {
-		this.idServicio = idServicio;
+	public void setIdServicioS(int idServicioS) {
+		this.idServicioS = idServicioS;
 	}
-	public int getIdCuidador() {
-		return this.idCuidador;
+	public int getIdCuidadorS() {
+		return this.idCuidadorS;
 	}
-	public void setIdCuidador(int idCuidador) {
-		this.idCuidador = idCuidador;
+	public void setIdCuidadorS(int idCuidadorS) {
+		this.idCuidadorS = idCuidadorS;
 	}
 
 	public boolean equals(Object other) {
@@ -43,15 +42,15 @@ public class ServiciocuidadorPK implements Serializable {
 		}
 		ServiciocuidadorPK castOther = (ServiciocuidadorPK)other;
 		return 
-			(this.idServicio == castOther.idServicio)
-			&& (this.idCuidador == castOther.idCuidador);
+			(this.idServicioS == castOther.idServicioS)
+			&& (this.idCuidadorS == castOther.idCuidadorS);
 	}
 
 	public int hashCode() {
 		final int prime = 31;
 		int hash = 17;
-		hash = hash * prime + this.idServicio;
-		hash = hash * prime + this.idCuidador;
+		hash = hash * prime + this.idServicioS;
+		hash = hash * prime + this.idCuidadorS;
 		
 		return hash;
 	}

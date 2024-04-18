@@ -21,23 +21,44 @@ public class Cuidador implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idCuidador;
 
-	@Lob
+	private int accesFirstTime;
+
 	private String descripcion;
 
+	private String descripcionCorta;
+
 	//bi-directional many-to-one association to Cuenta
-	@JsonBackReference(value = "user_cuidadores")
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="cuentaCuidador")
 	private Cuenta cuenta;
 
 	//bi-directional many-to-one association to Reserva
-	@OneToMany(mappedBy="cuidador")
-	private List<Reserva> reservas;
-	
-	//bi-directional many-to-one association to Serviciocuidador
 	@JsonManagedReference
 	@OneToMany(mappedBy="cuidador")
-	private List<Serviciocuidador> serviciocuidadors;
+	private List<Reserva> reservas;
+
+	//bi-directional many-to-many association to Servicio
+	@JsonManagedReference
+	@ManyToMany(mappedBy="cuidadors")
+	private List<Servicio> servicios;
+
+	//bi-directional many-to-many association to Animal
+	@ManyToMany
+	@JoinTable(
+		name="cuidadoranimal"
+		, joinColumns={
+			@JoinColumn(name="idCuidadorC")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="idAnimalC")
+			}
+		)
+	private List<Animal> animals;
+
+	//bi-directional many-to-many association to Dueño
+	@ManyToMany(mappedBy="cuidadors")
+	private List<Dueño> dueños;
 
 	public Cuidador() {
 	}
@@ -50,12 +71,28 @@ public class Cuidador implements Serializable {
 		this.idCuidador = idCuidador;
 	}
 
+	public int getAccesFirstTime() {
+		return this.accesFirstTime;
+	}
+
+	public void setAccesFirstTime(int accesFirstTime) {
+		this.accesFirstTime = accesFirstTime;
+	}
+
 	public String getDescripcion() {
 		return this.descripcion;
 	}
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	public String getDescripcionCorta() {
+		return this.descripcionCorta;
+	}
+
+	public void setDescripcionCorta(String descripcionCorta) {
+		this.descripcionCorta = descripcionCorta;
 	}
 
 	public Cuenta getCuenta() {
@@ -88,26 +125,28 @@ public class Cuidador implements Serializable {
 		return reserva;
 	}
 
-	public List<Serviciocuidador> getServiciocuidadors() {
-		return this.serviciocuidadors;
+	public List<Servicio> getServicios() {
+		return this.servicios;
 	}
 
-	public void setServiciocuidadors(List<Serviciocuidador> serviciocuidadors) {
-		this.serviciocuidadors = serviciocuidadors;
+	public void setServicios(List<Servicio> servicios) {
+		this.servicios = servicios;
 	}
 
-	public Serviciocuidador addServiciocuidador(Serviciocuidador serviciocuidador) {
-		getServiciocuidadors().add(serviciocuidador);
-		serviciocuidador.setCuidador(this);
-
-		return serviciocuidador;
+	public List<Animal> getAnimals() {
+		return this.animals;
 	}
 
-	public Serviciocuidador removeServiciocuidador(Serviciocuidador serviciocuidador) {
-		getServiciocuidadors().remove(serviciocuidador);
-		serviciocuidador.setCuidador(null);
+	public void setAnimals(List<Animal> animals) {
+		this.animals = animals;
+	}
 
-		return serviciocuidador;
+	public List<Dueño> getDueños() {
+		return this.dueños;
+	}
+
+	public void setDueños(List<Dueño> dueños) {
+		this.dueños = dueños;
 	}
 
 }

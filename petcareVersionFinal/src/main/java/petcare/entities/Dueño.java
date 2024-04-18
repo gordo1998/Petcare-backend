@@ -21,10 +21,14 @@ public class Dueño implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idDueño;
 
+	private int accesFirstTime;
+
 	private String descripcion;
 
+	private String descripcionCorta;
+
 	//bi-directional many-to-one association to Cuenta
-	@JsonBackReference(value = "user_dueños")
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="cuentaDueño")
 	private Cuenta cuenta;
@@ -33,6 +37,24 @@ public class Dueño implements Serializable {
 	@JsonManagedReference
 	@OneToMany(mappedBy="dueño")
 	private List<Reserva> reservas;
+
+	//bi-directional many-to-many association to Cuidador
+	@ManyToMany
+	@JoinTable(
+		name="cuidadorfavorito"
+		, joinColumns={
+			@JoinColumn(name="idDueñoDelFavorito")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="idCuidadorFavorito")
+			}
+		)
+	private List<Cuidador> cuidadors;
+
+	//bi-directional many-to-one association to Mascota
+	@JsonManagedReference
+	@OneToMany(mappedBy="dueño")
+	private List<Mascota> mascotas;
 
 	public Dueño() {
 	}
@@ -45,12 +67,28 @@ public class Dueño implements Serializable {
 		this.idDueño = idDueño;
 	}
 
+	public int getAccesFirstTime() {
+		return this.accesFirstTime;
+	}
+
+	public void setAccesFirstTime(int accesFirstTime) {
+		this.accesFirstTime = accesFirstTime;
+	}
+
 	public String getDescripcion() {
 		return this.descripcion;
 	}
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	public String getDescripcionCorta() {
+		return this.descripcionCorta;
+	}
+
+	public void setDescripcionCorta(String descripcionCorta) {
+		this.descripcionCorta = descripcionCorta;
 	}
 
 	public Cuenta getCuenta() {
@@ -81,6 +119,36 @@ public class Dueño implements Serializable {
 		reserva.setDueño(null);
 
 		return reserva;
+	}
+
+	public List<Cuidador> getCuidadors() {
+		return this.cuidadors;
+	}
+
+	public void setCuidadors(List<Cuidador> cuidadors) {
+		this.cuidadors = cuidadors;
+	}
+
+	public List<Mascota> getMascotas() {
+		return this.mascotas;
+	}
+
+	public void setMascotas(List<Mascota> mascotas) {
+		this.mascotas = mascotas;
+	}
+
+	public Mascota addMascota(Mascota mascota) {
+		getMascotas().add(mascota);
+		mascota.setDueño(this);
+
+		return mascota;
+	}
+
+	public Mascota removeMascota(Mascota mascota) {
+		getMascotas().remove(mascota);
+		mascota.setDueño(null);
+
+		return mascota;
 	}
 
 }

@@ -2,9 +2,6 @@ package petcare.entities;
 
 import java.io.Serializable;
 import jakarta.persistence.*;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 /**
@@ -19,18 +16,6 @@ public class Serviciocuidador implements Serializable {
 	@EmbeddedId
 	private ServiciocuidadorPK id;
 
-	//bi-directional many-to-one association to Cuidador
-	@JsonBackReference
-	@ManyToOne
-	@JoinColumn(name="cuidadorSC")
-	private Cuidador cuidador;
-
-	//bi-directional many-to-one association to Servicio
-	@JsonBackReference
-	@ManyToOne
-	@JoinColumn(name="servicioSC")
-	private Servicio servicio;
-
 	public Serviciocuidador() {
 	}
 
@@ -40,22 +25,6 @@ public class Serviciocuidador implements Serializable {
 
 	public void setId(ServiciocuidadorPK id) {
 		this.id = id;
-	}
-
-	public Cuidador getCuidador() {
-		return this.cuidador;
-	}
-
-	public void setCuidador(Cuidador cuidador) {
-		this.cuidador = cuidador;
-	}
-
-	public Servicio getServicio() {
-		return this.servicio;
-	}
-
-	public void setServicio(Servicio servicio) {
-		this.servicio = servicio;
 	}
 
 }
