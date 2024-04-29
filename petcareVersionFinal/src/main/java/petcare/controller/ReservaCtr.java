@@ -17,24 +17,23 @@ import petcare.entities.Cuenta;
 import petcare.entities.Cuidador;
 import petcare.entities.Dueño;
 import petcare.entities.Reserva;
-import petcare.service.Implementations.ReservaImpS;
-import petcare.service.Interfaces.ReservaIntS;
+import petcare.serviceF.ReservaIntS;
 
 @RestController
 public class ReservaCtr {
-	
-	private ReservaImpS service = new ReservaImpS();
+	@Autowired
+	ReservaIntS reservaService;
 	
 	@PostMapping(value = "addReserva", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void addReserva(@RequestBody List<Integer> datosReserva) {
 		int cuidador = datosReserva.get(0);
 		int dueño = datosReserva.get(1);
-		service.addReserva(cuidador, dueño);
+		reservaService.addReserva(cuidador, dueño);
 	}
 	
 	@GetMapping(value = "getReservas/{idDueño}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Map<String, List<String>> getReservas(@PathVariable("idDueño") int idDueño){
-		List<Reserva> reservas = service.retrieveReservasByDueño(idDueño);
+		List<Reserva> reservas = reservaService.retrieveReservasByDueño(idDueño);
 		
 		Dueño dueño = new Dueño();
 		

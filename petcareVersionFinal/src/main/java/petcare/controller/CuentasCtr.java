@@ -1,18 +1,23 @@
 package petcare.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import petcare.entities.Cuenta;
-import petcare.service.Implementations.CuentaImpS;
-import petcare.service.Interfaces.CuentaIntS;
+import petcare.entities.Servicio;
+import petcare.serviceF.CuentaImpS;
+import petcare.serviceF.CuentaIntS;
+import petcare.serviceF.ServicioIntS;
 
 @RestController
 public class CuentasCtr {
@@ -24,8 +29,12 @@ public class CuentasCtr {
 	@PostMapping(value = "registroCuenta", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	boolean registerCuenta(@RequestBody List<String> datosUser) {
 		Cuenta cuenta = new Cuenta();
-		cuenta.setEmail(datosUser.get(0));
-		cuenta.setPasswd(datosUser.get(1));
+		cuenta.setNombre(datosUser.get(0));
+		cuenta.setApellidoPrimero(datosUser.get(1));
+		cuenta.setApellidoDos(datosUser.get(2));
+		cuenta.setUsername(datosUser.get(3));
+		cuenta.setEmail(datosUser.get(4));
+		cuenta.setPasswd(datosUser.get(5));
 		return services.addCuenta(cuenta);
 	}
 	
@@ -40,7 +49,6 @@ public class CuentasCtr {
 	@PostMapping(value = "loginCorreo", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	Cuenta loginCorreo(@RequestBody List<String> datosUser) {
 		String email = datosUser.get(0);
-		System.out.print("Linea de prueba: ");
 		System.out.print(email);
 		return services.retriveCuentas(email);
 	}
@@ -51,7 +59,7 @@ public class CuentasCtr {
 	}
 	
 	@DeleteMapping(value = "deleteCuentaId/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	void deleteCuenta(@RequestBody int id) {
+	void deleteCuenta(@PathVariable("id") int id) {
 		services.removeCuenta(id);
 	}
 	
@@ -59,4 +67,7 @@ public class CuentasCtr {
 	void updateCuenta(@RequestBody Cuenta cuenta) {
 		services.addCuenta(cuenta);
 	}
+	
+	
+	
 }

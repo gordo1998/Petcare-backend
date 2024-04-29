@@ -11,42 +11,41 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import petcare.daoF.CuidadorJpa;
+import petcare.daoF.ServicioCuidadorJpa;
 import petcare.entities.Cuenta;
 import petcare.entities.Cuidador;
-import petcare.entities.Servicio;
 import petcare.entities.Serviciocuidador;
-import petcare.service.Implementations.CuentaImpS;
-import petcare.service.Implementations.CuidadorImpS;
-import petcare.service.Implementations.ServicioCuidadorImpS;
-import petcare.service.Interfaces.CuentaIntS;
-import petcare.service.Interfaces.CuidadorIntS;
-import petcare.service.Interfaces.ServicioCuidadorIntS;
+import petcare.entities.ServiciocuidadorPK;
+import petcare.serviceF.CuidadorIntS;
 
 @RestController
 public class ServicioCuidadorCtr {
-
-	private ServicioCuidadorImpS services = new ServicioCuidadorImpS();
-	private CuidadorImpS c = new CuidadorImpS();
-	private CuentaImpS cu = new CuentaImpS();
+	@Autowired
+	ServicioCuidadorJpa jpa;
+	@Autowired
+	CuidadorIntS cuidador;
 	
 	@GetMapping(value = "getServiciosCuidador/{idServicio}", produces = MediaType.APPLICATION_JSON_VALUE)
 	Map<String, List<String>> getlistServCuidadores(@PathVariable("idServicio") int idServicio){
 		
-		List<Serviciocuidador> cuidadores = services.retrieveServiciosCuidador(idServicio);//Aqui estan todos los cuidadores que hacen un servicio en concreto
-		List<Integer> listaCuidadoresIds = new ArrayList<>(); //cada id representa un cuidador
-		for (Serviciocuidador c: cuidadores) {
-			listaCuidadoresIds.add(c.getId().getIdCuidadorS());//Aqui introduzco los ids
+		List<Serviciocuidador> cuidadores = jpa.retrieveServiciosCuidador(idServicio);//Aqui tenemos los serviciosCuidador pero no podemos acceder a los cuidadores
+		List<ServiciocuidadorPK> idsServCuidador = new ArrayList<>();
+		for (Serviciocuidador s: cuidadores) {
+			idsServCuidador.add(s.getId());//Sacamos los ids de ServicioCuidador
 		}
 		
-		
 		List<Cuidador> listaCuidadores = new ArrayList<>();
-		for(Integer lc: listaCuidadoresIds) {
-			listaCuidadores.add(c.retrieveCuidador(idServicio));			
+		
+		for (ServiciocuidadorPK c: idsServCuidador) {
+			
+			listaCuidadores.add(cuidador.retrieveCuidador(c.getIdCuidadorS()));
 		}
 		
 		List<Cuenta> listaCuentas = new ArrayList<>();
-		for (Cuidador c: listaCuidadores) {
-			listaCuentas.add(cu.retriveCuentas(c.getIdCuidador()));
+		
+		for (Cuidador y: listaCuidadores) {
+			listaCuentas.add(y.getCuenta());
 		}
 		
 		Map<String, List<String>> mapString = new HashMap<>();
