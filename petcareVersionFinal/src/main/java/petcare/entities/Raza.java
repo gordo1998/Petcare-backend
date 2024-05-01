@@ -4,6 +4,8 @@ import java.io.Serializable;
 import jakarta.persistence.*;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 /**
  * The persistent class for the raza database table.
@@ -25,6 +27,7 @@ public class Raza implements Serializable {
 	private List<Mascota> mascotas;
 
 	//bi-directional many-to-one association to Animal
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="animalRaza")
 	private Animal animal;

@@ -8,10 +8,12 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import petcare.daoF.CuidadorJpa;
 import petcare.entities.Cuenta;
 import petcare.entities.Cuidador;
 import petcare.serviceF.CuentaIntS;
@@ -21,22 +23,37 @@ import petcare.serviceF.CuidadorIntS;
 public class CuidadorCtr {
 	
 	@Autowired
-	CuidadorIntS jpa;
+	CuidadorJpa jpa;
+	
+	
 	
 	
 	@GetMapping(value = "getCuidadores", produces = MediaType.APPLICATION_JSON_VALUE)
 	List<Cuidador> getCuidadores() {
-		return jpa.retrieveCuidadores();
+		return jpa.findAll();
 	}
 	
-	@PostMapping(value = "dueñoActivo", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void accessLogin(@RequestBody List<Integer> n) {
-		jpa.updateAccess(n.get(0), n.get(1));
+	@PutMapping(value = "dueñoActivo/{idCuidador}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public void accessLogin(@PathVariable("idCuidador") int idCuidador) {
+		
+		
+	
+		if(jpa.retrieveAccess(idCuidador) <= 0) {
+			//jpa.updateAccessFirst(1, idCuidador);
+			Cuidador c = jpa.getById(idCuidador);
+			c.setAccesFirstTime(1);
+		}
+		Cuidador c = jpa.getById(idCuidador);
+		c.setAccesFirstTime(1);
+		jpa.save(c);
+		
+		
+		
 	}
 	
 	@GetMapping(value = "getAccesTimes/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	int getAccesTime(@PathVariable("id") int a) {
-		return jpa.retrieveAcces(a);
+		return jpa.retrieveAccess(a);
 	}
 	
 

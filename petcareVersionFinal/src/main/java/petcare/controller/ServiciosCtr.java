@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import petcare.daoF.ServicioJpa;
 import petcare.entities.Servicio;
 import petcare.serviceF.ServicioIntS;
 
@@ -27,5 +28,24 @@ public class ServiciosCtr {
 		
 		return strServicios;
 	}
+	
+	/*
+	@Autowired
+	ServicioJpa jpa;
+	
+	@GetMapping(value = "getServicios", produces = MediaType.APPLICATION_JSON_VALUE)
+	List<String> getServicios(){
+		List<Servicio> servicios = jpa.findAll();
+		List<String> strServicios = new ArrayList<>();
+		
+		for (Servicio s: servicios) {
+			strServicios.add(s.getNombreServicio());		
+		}
+		
+		return strServicios;
+	}
+	
+	*/
+	
 	
 }
