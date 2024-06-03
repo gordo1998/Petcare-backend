@@ -49,14 +49,15 @@ public class ServicioCuidadorCtr {
 		List<Cuidador> listaCuidadores = new ArrayList<>();
 		
 		for (ServiciocuidadorPK c: idsServCuidador) {
-			
-			listaCuidadores.add(cuidador.getReferenceById(c.getIdCuidadorS()));//Aqui añadimos el cuidador en una lista donde estarán todos los cuidadores
+			Cuidador ce = cuidador.getById(c.getIdCuidadorS());
+			listaCuidadores.add(ce);//Aqui añadimos el cuidador en una lista donde estarán todos los cuidadores
 		}
 		
 		List<Cuenta> listaCuentas = new ArrayList<>();
 		
 		for (Cuidador y: listaCuidadores) {
-			listaCuentas.add(y.getCuenta());
+			Cuenta cuen = y.getCuenta();
+			listaCuentas.add(cuen);
 		}
 		
 		Map<String, List<String>> mapString = new HashMap<>();

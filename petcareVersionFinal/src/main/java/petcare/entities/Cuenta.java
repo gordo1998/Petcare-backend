@@ -4,7 +4,6 @@ import java.io.Serializable;
 import jakarta.persistence.*;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
@@ -35,19 +34,19 @@ public class Cuenta implements Serializable {
 
 	private int telefono;
 
-	private byte tipoPerdil;
+	private byte tipoPerfil;
 
 	private String urlImagenes;
 
 	private String username;
 
 	//bi-directional many-to-one association to Cuidador
-	@JsonManagedReference(value = "user_cuidadores")
+	@JsonManagedReference
 	@OneToMany(mappedBy="cuenta")
 	private List<Cuidador> cuidadors;
 
 	//bi-directional many-to-one association to Dueño
-	@JsonManagedReference(value = "user_dueños")
+	@JsonManagedReference
 	@OneToMany(mappedBy="cuenta")
 	private List<Dueño> dueños;
 
@@ -118,12 +117,12 @@ public class Cuenta implements Serializable {
 		this.telefono = telefono;
 	}
 
-	public byte getTipoPerdil() {
-		return this.tipoPerdil;
+	public byte getTipoPerfil() {
+		return this.tipoPerfil;
 	}
 
-	public void setTipoPerdil(byte tipoPerdil) {
-		this.tipoPerdil = tipoPerdil;
+	public void setTipoPerfil(byte tipoPerfil) {
+		this.tipoPerfil = tipoPerfil;
 	}
 
 	public String getUrlImagenes() {

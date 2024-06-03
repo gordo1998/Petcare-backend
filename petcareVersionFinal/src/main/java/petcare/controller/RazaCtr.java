@@ -1,7 +1,9 @@
 package petcare.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -19,11 +21,18 @@ public class RazaCtr {
 	RazaJpa jpa;
 	
 	@GetMapping(value = "getRazas/{idAnimal}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<String> getRazas(@PathVariable("idAnimal") int idAnimal) {
-		List<String> nameRazas = new ArrayList<>();
-		for(Raza r: jpa.getRazaByAnimal(idAnimal)) {
-			nameRazas.add(r.getNombre());
+	public Map<String, Map<String, Object>> getRazas(@PathVariable("idAnimal") int idAnimal) {
+		int i = 1;
+		Map<String, Map<String, Object>> mGeneral = new HashMap<>();
+		List<Raza> racista = jpa.getRazaByAnimal(idAnimal);
+		for(Raza r: racista) {
+			Map<String, Object> mPorRaza = new HashMap<>();
+			mPorRaza.put("id", r.getIdRaza());
+			mPorRaza.put("nombre", r.getNombre());
+			mGeneral.put("Raza " + i, mPorRaza);
+			i++;
+			
 		}
-		return nameRazas;
+		return mGeneral;
 	}
 }

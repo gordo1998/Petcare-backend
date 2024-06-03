@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.websocket.server.PathParam;
 import petcare.daoF.CuentaJpa;
+import petcare.daoF.CuidadorJpa;
 import petcare.daoF.DueñoJpa;
 import petcare.entities.Cuenta;
+import petcare.entities.Cuidador;
 import petcare.entities.Dueño;
 
 @RestController
@@ -24,6 +26,9 @@ public class DueñoCtr {
 	DueñoJpa jpa;
 	@Autowired
 	CuentaJpa cuenta;
+	
+	@Autowired
+	CuidadorJpa cuidJpa;
 	
 	@PutMapping(value = "addDueñoAccess/{idDueño}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public void addAcces(@PathVariable("idDueño") int idDueño) {
@@ -40,7 +45,12 @@ public class DueñoCtr {
 		
 		Dueño d = new Dueño();
 		Cuenta c = cuenta.getById(cuenta.getIdByEmail(correo.get(0)));
+		Cuidador cuidador = new Cuidador();
+		cuidador.setIdCuidador(c.getIdCuenta());
 		d.setCuenta(c);
+		cuidador.setCuenta(c);
+		cuidJpa.save(cuidador);
+		
 		jpa.save(d);
 	}
 	

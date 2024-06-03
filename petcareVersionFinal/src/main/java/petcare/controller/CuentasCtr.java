@@ -1,7 +1,9 @@
 package petcare.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -48,11 +50,26 @@ public class CuentasCtr {
 	
 	
 	@PostMapping(value = "loginCuenta", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	Cuenta loginCuenta(@RequestBody List<String> datosUser) {
+	Map<String, Object> loginCuenta(@RequestBody List<String> datosUser) {
+		Map<String, Object> mapCuenta = new HashMap<>();
 		String email = datosUser.get(0);
 		String contrasenya = datosUser.get(1);
-		
-		return services.retriveCuentas(email, contrasenya);
+		Cuenta cuenta = services.retriveCuentas(email, contrasenya);
+		if (cuenta == null) {
+			mapCuenta.put("state", "Error");
+		}else {
+			mapCuenta.put("idCuenta", cuenta.getIdCuenta());
+			mapCuenta.put("nombre", cuenta.getNombre());
+			mapCuenta.put("apellido Uno", cuenta.getApellidoPrimero());
+			mapCuenta.put("apellido dos", cuenta.getApellidoDos());
+			mapCuenta.put("username", cuenta.getUsername());
+			mapCuenta.put("correo", cuenta.getEmail());
+			mapCuenta.put("movil", cuenta.getMovil());
+			mapCuenta.put("telefono", cuenta.getTelefono());
+			mapCuenta.put("password", cuenta.getPasswd());
+			mapCuenta.put("tipo perfil", cuenta.getTipoPerfil());
+		}
+		return mapCuenta;
 	}
 	
 	@PostMapping(value = "loginCorreo", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -76,6 +93,36 @@ public class CuentasCtr {
 	void updateCuenta(@RequestBody Cuenta cuenta) {
 		services.addCuenta(cuenta);
 	}
+	
+	@PutMapping(value = "updateC", consumes = MediaType.APPLICATION_JSON_VALUE)
+    void updateC(@RequestBody Map<String, String> mCuenta) {
+        Cuenta cuenta = c.getById(Integer.parseInt(mCuenta.get("idcuenta")));
+        for(Map.Entry<String, String> entrada: mCuenta.entrySet()) {
+            switch (entrada.getKey()) {
+            case "nombre":
+                cuenta.setNombre(entrada.getValue());
+                break;
+            case "apellidoPrimero":
+                cuenta.setApellidoPrimero(entrada.getValue());
+                break;
+            case "apellidoDos":
+                cuenta.setApellidoDos(entrada.getValue());
+                break;
+            case "movil":
+                cuenta.setMovil(Integer.parseInt(entrada.getValue()));
+                break;
+            case "passwd":
+                cuenta.setPasswd(entrada.getValue());
+                break;
+            case "telefono":
+                cuenta.setTelefono(Integer.parseInt(entrada.getValue()));
+                break;
+            case "username":
+                cuenta.setUsername(entrada.getValue());
+            }
+        }
+        c.save(cuenta);
+    }
 	
 	
 	

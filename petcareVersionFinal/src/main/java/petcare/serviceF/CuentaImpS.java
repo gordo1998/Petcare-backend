@@ -55,9 +55,9 @@ public class CuentaImpS implements CuentaIntS{
 	}
 
 	@Override
-	public Cuenta retriveCuentas(String correo, String contraseña) {
-		if(dao.retriveCuentas(correo, contraseña) != null) {
-			return dao.retriveCuentas(correo, contraseña);
+	public Cuenta retriveCuentas(String correo, String contrasenya) {
+		if(dao.retriveCuentas(correo, contrasenya) != null) {
+			return dao.retriveCuentas(correo, contrasenya);
 		}
 		return null;
 	}

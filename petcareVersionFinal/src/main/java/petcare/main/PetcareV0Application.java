@@ -5,9 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-@ComponentScan(basePackages = {"petcare.controller", "petcare.dao", "petcare.entities", "petcare.service"})
+@ComponentScan(basePackages = {"petcare.controller", "petcare.daoF", "petcare.serviceF", "petcare.entities"})
 @EntityScan(basePackages = {"petcare.entities"})
-@EnableJpaRepositories(basePackages = {"petcare.dao"})
+@EnableJpaRepositories(basePackages = {"petcare.daoF", "petcare.serviceF"})
 @SpringBootApplication
 public class PetcareV0Application {
 
