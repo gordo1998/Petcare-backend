@@ -35,7 +35,7 @@ public class Dueño implements Serializable {
 
 	//bi-directional many-to-one association to Reserva
 	@JsonManagedReference
-	@OneToMany(mappedBy="dueño")
+	@OneToMany(mappedBy="duenyo")
 	private List<Reserva> reservas;
 
 	//bi-directional many-to-many association to Cuidador
@@ -113,14 +113,14 @@ public class Dueño implements Serializable {
 
 	public Reserva addReserva(Reserva reserva) {
 		getReservas().add(reserva);
-		reserva.setDueño(this);
+		reserva.setDuenyo(this);
 
 		return reserva;
 	}
 
 	public Reserva removeReserva(Reserva reserva) {
 		getReservas().remove(reserva);
-		reserva.setDueño(null);
+		reserva.setDuenyo(null);
 
 		return reserva;
 	}

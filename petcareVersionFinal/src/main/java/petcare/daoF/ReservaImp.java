@@ -29,7 +29,7 @@ public class ReservaImp implements ReservaInt {
 		cuidador.setIdCuidador(idcuidador);
 		dueño.setIdDueño(iddueño);
 		reserva.setCuidador(cuidador);
-		reserva.setDueño(dueño);
+		reserva.setDuenyo(dueño);
 		jpa.save(reserva);
 	}
 

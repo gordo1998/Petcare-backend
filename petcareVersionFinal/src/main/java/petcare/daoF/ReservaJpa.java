@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import petcare.entities.*;
 @Repository
 public interface ReservaJpa extends JpaRepository<Reserva, Integer>{
-	@Query("Select r from Reserva r where r.dueño.idDueño = ?1")
+	@Query("Select r from Reserva r where r.duenyo.idDueño = ?1")
 	List<Reserva> retrieveReservasByDueño(int idDueño);
 	
 	@Query("Select r from Reserva r where r.cuidador.idCuidador = ?1")

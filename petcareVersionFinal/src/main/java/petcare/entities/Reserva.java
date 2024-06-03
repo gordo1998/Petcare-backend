@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 /**
@@ -24,50 +23,48 @@ public class Reserva implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idReserva;
-
-	private int dia;
-
-	private Time hora;
-
-	private int mes;
-
-	private String ubicacionServicio;
-
-	//bi-directional many-to-one association to Cuidador
+	
 	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="cuidadorR")
 	private Cuidador cuidador;
-
-	//bi-directional many-to-one association to Dueño
+	
+	@JsonBackReference
+	@ManyToOne
+	@JoinColumn(name="serv")
+	private Servicio serv;
+	
 	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="duenyoR")
-	private Dueño dueño;
-
-	//bi-directional many-to-many association to Mascota
-	@JsonManagedReference
+	private Dueño duenyo;
+	
 	@ManyToMany
 	@JoinTable(
-		name="mascotareservada"
-		, joinColumns={
-			@JoinColumn(name="idReservaR")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="idMascotaR")
-			}
-		)
+			name="mascotareservada"
+			, joinColumns={
+				@JoinColumn(name="idReservaR")
+				}
+			, inverseJoinColumns={
+				@JoinColumn(name="idMascotaR")
+				}
+			)
 	private List<Mascota> mascotas;
+	
+
+	private int dia;
+	
+	
+
+	private Time hora;
+
+	private int mes;
+	
+	
+
+	private String ubicacionServicio;
 
 	public Reserva() {
-	}
-	
-	public Reserva(Cuidador cuidador, Dueño dueño) {
-		this.cuidador = cuidador;
-		this.dueño = dueño;
-		this.mes = mes;
-		this.dia = dia;
-		this.hora = hora;
 	}
 
 	public int getIdReserva() {
@@ -78,12 +75,28 @@ public class Reserva implements Serializable {
 		this.idReserva = idReserva;
 	}
 
+	public Cuidador getCuidador() {
+		return this.cuidador;
+	}
+
+	public void setCuidador(Cuidador cuidadorR) {
+		this.cuidador = cuidadorR;
+	}
+
 	public int getDia() {
 		return this.dia;
 	}
 
 	public void setDia(int dia) {
 		this.dia = dia;
+	}
+
+	public Dueño getDuenyo() {
+		return this.duenyo;
+	}
+
+	public void setDuenyo(Dueño duenyoR) {
+		this.duenyo = duenyoR;
 	}
 
 	public Time getHora() {
@@ -102,6 +115,14 @@ public class Reserva implements Serializable {
 		this.mes = mes;
 	}
 
+	public Servicio getServ() {
+		return this.serv;
+	}
+
+	public void setServ(Servicio serv) {
+		this.serv = serv;
+	}
+
 	public String getUbicacionServicio() {
 		return this.ubicacionServicio;
 	}
@@ -109,24 +130,8 @@ public class Reserva implements Serializable {
 	public void setUbicacionServicio(String ubicacionServicio) {
 		this.ubicacionServicio = ubicacionServicio;
 	}
-
-	public Cuidador getCuidador() {
-		return this.cuidador;
-	}
-
-	public void setCuidador(Cuidador cuidador) {
-		this.cuidador = cuidador;
-	}
-
-	public Dueño getDueño() {
-		return this.dueño;
-	}
-
-	public void setDueño(Dueño dueño) {
-		this.dueño = dueño;
-	}
-
-	public Map<String, Map<String, Object>> getMascotas() {
+	
+	public Map<String, Map<String, Object>> getMascotas(){
 		Map<String, Map<String, Object>> mapMascotas = new HashMap<>();
 		int mascota = 0;
 		for (Mascota m: this.mascotas) {
@@ -141,10 +146,6 @@ public class Reserva implements Serializable {
 			mascota++;
 		}
 		return mapMascotas;
-	}
-
-	public void setMascotas(List<Mascota> mascotas) {
-		this.mascotas = mascotas;
 	}
 
 }

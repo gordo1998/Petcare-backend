@@ -71,6 +71,21 @@ public class MascotaCtr {
 		return mascotas;
 	}
 	
+	@GetMapping(value = "getMascota/{idMascota}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Map<String, Object> getMascota(@PathVariable("idMascota") int idMascota){
+		Mascota mascota = jpa.getById(idMascota);
+		Raza raza = mascota.getRaza();
+		Animal animal = raza.getAnimal();
+		Map<String, Object> mapMascota = new HashMap<>();
+		mapMascota.put("idMascota", mascota.getIdMascota());
+		mapMascota.put("nombre", mascota.getNombre());
+		mapMascota.put("raza", raza.getNombre());
+		mapMascota.put("animal", animal.getNombre());
+		mapMascota.put("descripcion", mascota.getDescSobreMascota());
+		mapMascota.put("descripcion enfermedades", mascota.getDescEnfermedades());
+		return mapMascota;
+	}
+	
 	@DeleteMapping(value = "deleteMascota/{idMascota}")
 	public void eliminarMascota(@PathVariable("idMascota") int idMascota) {
 		Mascota mascota = jpa.getById(idMascota);

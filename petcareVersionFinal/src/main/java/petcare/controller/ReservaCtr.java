@@ -20,6 +20,7 @@ import petcare.daoF.MascotaJpa;
 import petcare.daoF.MascotaReservadaJpa;
 import petcare.daoF.RazaJpa;
 import petcare.daoF.ReservaJpa;
+import petcare.daoF.ServicioJpa;
 import petcare.entities.Animal;
 import petcare.entities.Cuenta;
 import petcare.entities.Cuidador;
@@ -28,6 +29,7 @@ import petcare.entities.Mascota;
 import petcare.entities.MascotareservadaPK;
 import petcare.entities.Raza;
 import petcare.entities.Reserva;
+import petcare.entities.Servicio;
 import petcare.serviceF.ReservaIntS;
 
 @RestController
@@ -53,6 +55,9 @@ public class ReservaCtr {
 	@Autowired
 	RazaJpa raza;
 	
+	@Autowired
+	ServicioJpa sJpa;
+	
 	@PostMapping(value = "addReserva", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public int addReserva(@RequestBody Map<String, Integer> datosReserva) {
 		Reserva reserva = new Reserva();
@@ -66,7 +71,11 @@ public class ReservaCtr {
 				break;
 			case "idDueño":
 				Dueño d = jpaD.getById(r.getValue());
-				reserva.setDueño(d);			
+				reserva.setDuenyo(d);			
+				break;
+			case "idServicio":
+				Servicio s = sJpa.getById(r.getValue());
+				reserva.setServ(s);
 				break;
 			}
 		}
@@ -78,21 +87,23 @@ public class ReservaCtr {
 	
 	
 	@GetMapping(value = "getReservasDueño/{idDueño}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Map<String, Map<String, String>> getReservas(@PathVariable("idDueño") int idDueño){
+	public Map<String, Map<String, Object>> getReservas(@PathVariable("idDueño") int idDueño){
 		List<Reserva> reservas = reservaService.retrieveReservasByDueño(idDueño);//Cojo todas las reservas de un dueño
 		
-		Map<String, Map<String, String>> reservasMap = new HashMap<>();
-		Map<String, String> reserva = new HashMap<>();
-		int i = 0;
+		Map<String, Map<String, Object>> reservasMap = new HashMap<>();
+		
 		for (Reserva r: reservas) {//Iteramos en cada reserva
+			Map<String, Object> reserva = new HashMap<>();
 			Cuidador cuidador = r.getCuidador();//Creamos un nuevo cuidador y de la reserva sacamos el cuidador de esa reserva 
 			Cuenta cuentaCuidador = cuidador.getCuenta();//Ahora, de ese cuidador vamos 
+			Servicio servicio = r.getServ();
+			Map<String, Map<String, Object>> lMascotas = r.getMascotas();
 			reserva.put("Nombre: ", cuentaCuidador.getNombre());
-			reserva.put("Apellido uno: ", cuentaCuidador.getApellidoPrimero());
-			reserva.put("Apellido dos: ", cuentaCuidador.getApellidoDos());
-			
-			reservasMap.put(("Reserva " + r.getIdReserva()), reserva);//Ahora vamos a ingresar la reserva con los datos
-			i++;
+			reserva.put("Apellido uno", cuentaCuidador.getApellidoPrimero());
+			reserva.put("Apellido dos", cuentaCuidador.getApellidoDos());
+			reserva.put("mascota", lMascotas);
+			reserva.put("Servicio", servicio.getNombreServicio());
+			reservasMap.put(("Reserva" + r.getIdReserva()), reserva);//Ahora vamos a ingresar la reserva con los datos
 		}
 		return reservasMap;
 	}
@@ -108,14 +119,16 @@ public class ReservaCtr {
 		for (Reserva r: reservas) {
 			
 			Map<String, Object> mapReserva = new HashMap<>();
-			Dueño dueño = r.getDueño();
+			Dueño dueño = r.getDuenyo();
 			Cuenta cuenta = dueño.getCuenta();
+			Servicio servicio = r.getServ();
 			Map<String, Map<String, Object>> lMascotas = r.getMascotas();//Devuelve un mapa de todas las mascotas
 			mapReserva.put("Nombre: ", cuenta.getNombre());
 			mapReserva.put("Apellido uno: ", cuenta.getApellidoPrimero());
 			mapReserva.put("Apellido dos: ", cuenta.getApellidoDos());
 			mapReserva.put("Mascotas", lMascotas);
-			//mapReserva.put("Servicio", r.get)
+			mapReserva.put("Servicio", servicio.getNombreServicio());
+			
 			mapReservas.put("Reserva: " + r.getIdReserva(), mapReserva);
 			
 		}

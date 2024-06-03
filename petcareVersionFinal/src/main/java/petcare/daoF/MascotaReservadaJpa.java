@@ -10,6 +10,8 @@ import petcare.entities.*;
 @Repository
 public interface MascotaReservadaJpa extends JpaRepository<Mascotareservada, MascotareservadaPK>{
 
-	@Query("Select m.id.idMascotaR from Mascotareservada m join Reserva r on m.id.idReservaR = r.idReserva where r.dueño.idDueño = ?1")
+	
+	@Query("Select m.id.idMascotaR from Mascotareservada m join Reserva r on m.id.idReservaR = r.idReserva where r.duenyo.idDueño = ?1")
 	List<MascotareservadaPK> getMascotasReservadasByDueño(int idDuenyo);
+	
 }
