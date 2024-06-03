@@ -52,9 +52,10 @@ public class MascotaReservadaCtr {
 	@PostMapping(value = "setMascotaReservada")
 	public void setMascotaReservada(@RequestBody Map<String, Object> idsReservaMascotas) {
 		List<Integer> idsMascotas = (List<Integer>) idsReservaMascotas.get("listaMascotas");
-		MascotareservadaPK m = new MascotareservadaPK();
+		
 		
 		for(Integer list: idsMascotas) {
+			MascotareservadaPK m = new MascotareservadaPK();
 			m.setIdMascotaR(list);
 			m.setIdReservaR((Integer) idsReservaMascotas.get("idReserva"));
 			Mascotareservada mr = new Mascotareservada();

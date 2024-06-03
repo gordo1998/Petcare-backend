@@ -131,13 +131,11 @@ public class Cuidador implements Serializable {
 
 	public Map<String, Map<String, Object>> getServicios() {
 		Map<String, Map<String, Object>> mapServicios = new HashMap<>();
-		int servicio = 0;
 		for (Servicio i: this.servicios) {
 			Map<String, Object> mapServicio = new HashMap<>();
 			mapServicio.put("idServicio", i.getIdServicio());
 			mapServicio.put("nombre", i.getNombreServicio());
-			mapServicios.put("Servicio " + servicio, mapServicio);
-			servicio++;
+			mapServicios.put("Servicio " + i.getIdServicio(), mapServicio);
 		}
 		return mapServicios;
 	}

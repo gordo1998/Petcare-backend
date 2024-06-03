@@ -26,6 +26,7 @@ import petcare.entities.Cuenta;
 import petcare.entities.Cuidador;
 import petcare.entities.Dueño;
 import petcare.entities.Mascota;
+import petcare.entities.Mascotareservada;
 import petcare.entities.MascotareservadaPK;
 import petcare.entities.Raza;
 import petcare.entities.Reserva;
@@ -59,30 +60,43 @@ public class ReservaCtr {
 	ServicioJpa sJpa;
 	
 	@PostMapping(value = "addReserva", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public int addReserva(@RequestBody Map<String, Integer> datosReserva) {
+	public int addReserva(@RequestBody Map<String, Object> datosReserva) {
 		Reserva reserva = new Reserva();
-									  
+		Reserva res = new Reserva();							  
 		//Map.Entry<String, String> entrada: mCuenta.entrySet()
-		for(Map.Entry<String, Integer> r: datosReserva.entrySet()){
+		for(Map.Entry<String, Object> r: datosReserva.entrySet()){
 			switch (r.getKey()) {
 			case "idCuidador":
-				Cuidador c = jpaC.getById(r.getValue());
+				Cuidador c = jpaC.getById((Integer) r.getValue());
 				reserva.setCuidador(c);
 				break;
 			case "idDueño":
-				Dueño d = jpaD.getById(r.getValue());
+				Dueño d = jpaD.getById((Integer) r.getValue());
 				reserva.setDuenyo(d);			
 				break;
 			case "idServicio":
-				Servicio s = sJpa.getById(r.getValue());
+				Servicio s = sJpa.getById((Integer) r.getValue());
 				reserva.setServ(s);
 				break;
+			case "mascotas":
+				List<Map<String, Object>> mascotas = (List<Map<String, Object>>)r.getValue();
+				res = jpa.save(reserva);
+				
+				for(Map<String, Object> i: mascotas) {
+					MascotareservadaPK idMascotaReservada = new MascotareservadaPK();
+					Mascotareservada mascotaReservada = new Mascotareservada();
+					idMascotaReservada.setIdMascotaR((Integer) i.get("idMascota"));
+					idMascotaReservada.setIdReservaR(res.getIdReserva());
+					mascotaReservada.setId(idMascotaReservada);
+					mJpa.save(mascotaReservada);
+					
+				}
 			}
 		}
+		//Reserva r = jpa.save(reserva);
 		
 		
-		Reserva r = jpa.save(reserva);
-		return r.getIdReserva();
+		return res.getIdReserva();
 	}
 	
 	
